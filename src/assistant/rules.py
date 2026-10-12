@@ -26,4 +26,8 @@ def reply(message: str, offices: dict[str, dict[str, str]] | None = None) -> str
     for name, row in offices.items():
         if name in text:
             return f"{row['name']}: room {row['room']}, open {row['hours']}."
+    for name, row in offices.items():
+        keywords = [w for w in name.split() if w not in {"office", "offices", "room"}] or name.split()
+        if text in name or any(kw in text for kw in keywords):
+            return f"{row['name']}: room {row['room']}, open {row['hours']}."
     return "I don't know that yet. Try asking about an office, e.g. 'training office'."
